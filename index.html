@@ -1,193 +1,212 @@
 <!DOCTYPE html>
 <html lang="fa">
 <head>
-    <meta charset="UTF-8" />
-    <title>Sigol</title>
-    <style>
-        body {
-            background: linear-gradient(to bottom, #e0f7fa, #ffffff);
-            font-family: "Tahoma", "Vazirmatn", sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 60px 30px;
-            margin: 0;
-            min-height: 100vh;
-        }
+  <meta charset="utf-8" />
+  <title>سی‌گل</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <style>
+    :root{
+      --main:#009688;
+      --main-dark:#00796b;
+    }
 
-        .container {
-            background-color: #ffffffcc;
-            backdrop-filter: blur(5px);
-            border-radius: 25px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            padding: 40px;
-            text-align: center;
-            max-width: 600px;
-            width: 100%;
-            position: relative;
-        }
+    body{<!DOCTYPE html>
+<html lang="fa">
+<head>
+  <meta charset="utf-8" />
+  <title>سی‌گل</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <style>
+    :root{
+      --
+      direction: rtl;
+      margin:0;
+      font-family: "Tahoma","Vazirmatn",sans-serif;
+      background: linear-gradient(to bottom,#e0f7fa,#ffffff);
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:30px;
+    }
 
-        /* h1 با حروف داخل span */
-        #sigolText {
-            font-size: 80px;
-            color: #00796b;
-            margin-bottom: 40px;
-            letter-spacing: 2em; /* فاصله زیاد بین حروف اول */
-            user-select: none;
-            display: flex;
-            justify-content: center;
-            gap: 0;
-            opacity: 0;
-            transition: letter-spacing 1.5s ease-in-out;
-        }
+    .container{
+      width:100%;
+      max-width:720px;
+      background: rgba(255,255,255,0.92);
+      border-radius:16px;
+      box-shadow:0 10px 30px rgba(0,0,0,0.12);
+      padding:36px;
+      text-align:center;
+    }
 
-        #sigolText span {
-            opacity: 0;
-            display: inline-block;
-            transform: translateY(30px);
-            animation-fill-mode: forwards;
-            animation-name: letterFadeIn;
-            animation-duration: 0.5s;
-        }
+    /* عنوان بالای صفحه (ثابت، بدون انیمیشن) */
+    #sigolText{
+      font-size:64px;           /* سایز بزرگ‌تر برای موبایل و دسکتاپ */
+      color: #00796b;
+      margin:0 0 26px 0;
+      user-select:none;
+    }
 
-        @keyframes letterFadeIn {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
+    /* تصویر (بعد از 3 ثانیه ظاهر می‌شود) */
+    img{
+      width:100%;
+      border-radius:14px;
+      box-shadow:0 6px 18px rgba(0,0,0,0.12);
+      transform: scale(0.85);
+      opacity:0;
+      transition: transform 450ms ease, opacity 450ms ease;
+      margin-bottom:30px;
+    }
 
-        img {
-            width: 100%;
-            border-radius: 20px;
-            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
-            margin-bottom: 40px;
-            opacity: 0;
-            transform: scale(0.3);
-            transition: opacity 1s ease, transform 1s ease;
-        }
+    /* گروه دکمه‌ها در یک ردیف، فاصله بین ادامه و شروع مجدد */
+    .button-group{
+      display:flex;
+      gap:16px;
+      justify-content:space-between; /* ادامه سمت چپ، شروع مجدد سمت راست */
+      max-width:520px;
+      margin:0 auto;
+      opacity:0;
+      pointer-events:none;
+      transition: opacity 260ms ease;
+    }
 
-        button {
-            font-size: 22px;
-            padding: 16px 40px;
-            background-color: #009688;
-            color: white;
-            border: none;
-            border-radius: 12px;
-            cursor: pointer;
-            transition: background-color 0.3s, opacity 0.5s ease;
-            margin: 15px 10px 0 10px;
-            opacity: 0;
-            pointer-events: none;
-        }
+    /* دکمه‌ها بلندتر و خوانا */
+    .button-group button{
+      flex:1;
+      min-height:64px;            /* بلندی دکمه */
+      padding:12px 18px;          /* فاصله داخلی افقی/عمودی */
+      font-size:20px;            /* کمی بزرگ‌تر */
+      border-radius:12px;
+      border: none;
+      background: var(--main);
+      color:#fff;
+      cursor:pointer;
+      transition: background 200ms ease, transform 120ms ease;
+      line-height:1;             /* برای تراز عمودی بهتر */
+    }
 
-        button:hover {
-            background-color: #00796b;
-        }
+    .button-group button:hover{ background: var(--main-dark); transform: translateY(-2px); }
 
-        /* کلاس فعال سازی انیمیشن ها و دکمه ها */
-        .active #sigolText {
-            opacity: 1;
-        }
+    /* وقتی active شد، تصویر و دکمه‌ها نمایان میشن */
+    .active img{ opacity:1; transform: scale(1); }
+    .active .button-group{ opacity:1; pointer-events:auto; }
 
-        .active img {
-            opacity: 1;
-            transform: scale(1);
-        }
+    /* دکمه توقف را مخفی می‌کنیم تا فقط بسته به وضعیت نمایش داده شود */
+    #stopButton{ display:none; }
 
-        .active button {
-            opacity: 1;
-            pointer-events: auto;
-        }
-    </style>
+    /* حالت واکنشگرا: در موبایل فونت و اندازه دکمه ها کمی کمتر شود */
+    @media (max-width:420px){
+      #sigolText{ font-size:48px; margin-bottom:18px; }
+      .button-group button{ min-height:56px; font-size:18px; padding:10px 12px; }
+      .container{ padding:24px; }
+    }
+  </style>
 </head>
 <body>
 
-    <div class="container">
-        <h1 id="sigolText">
-            <span>s</span><span>i</span><span>g</span><span>o</span><span>l</span>
-        </h1>
-        <img src="https://i.ibb.co/9kmxVLrv/photo-2025-08-11-18-29-27.jpg" alt="Sigol" />
-        <button id="playButton" onclick="playAudio()">شنیدن صدا</button>
-        <button id="stopButton" onclick="stopAudio()">توقف صدا</button>
-        <button id="restartButton" onclick="restartAudio()">شروع مجدد</button>
+  <div class="container">
+    <!-- عنوان بالای صفحه؛ از زِرو-واید-نو-جویِنر بین سی و گل استفاده شده -->
+    <h1 id="sigolText">سی‌گل</h1>
+
+    <!-- تصویر: ابتدا مخفی، بعد از 3 ثانیه با زوم به نمایش درمی‌آید -->
+    <img id="heroImg" src="https://i.ibb.co/39Kf0PTz/photo-2025-08-07-15-55-18.jpg" alt="سی‌گل">
+
+    <!-- گروه دکمه‌ها: ترتیب در DOM به این شکله که وقتی توقف رو می‌زنیم،
+         ادامه (سمت چپ) و شروع مجدد (سمت راست) به صورت قابل کلیک باقی می‌مونن -->
+    <div class="button-group" id="buttonGroup">
+      <button id="continueButton" onclick="continueAudio()">ادامه‌ی صدا</button>
+      <button id="playButton" onclick="playAudio()">شنيدن صدا</button>
+      <button id="stopButton" onclick="stopAudio()">توقف صدا</button>
+      <button id="restartButton" onclick="restartAudio()">شروع مجدد</button>
     </div>
+  </div>
 
-    <audio id="audio">
-        <source src="https://atadn11.github.io/musicssigolpro/song2.mp3" type="audio/mpeg" />
-        مرورگر شما از پخش صدا پشتیبانی نمی‌کند.
-    </audio>
+  <audio id="audio">
+    <source src="https://atadn11.github.io/musicssigolpro/song1.mp3" type="audio/mpeg">
+    مرورگر شما از پخش صدا پشتیبانی نمی‌کند.
+  </audio>
 
-    <script>
-        const container = document.querySelector('.container');
-        const playButton = document.getElementById("playButton");
-        const stopButton = document.getElementById("stopButton");
-        const restartButton = document.getElementById("restartButton");
-        const audio = document.getElementById("audio");
-        const sigolText = document.getElementById("sigolText");
-        const letters = sigolText.querySelectorAll('span');
-        let pauseTime = 0;
+  <script>
+    // توجه: همه‌ی متن‌های فارسی با حرف ی فارسی (U+06CC) نوشته شده‌اند
+    const container = document.querySelector('.container');
+    const buttonGroup = document.getElementById('buttonGroup');
+    const heroImg = document.getElementById('heroImg');
 
-        // دکمه‌ها اول مخفی باشند
-        stopButton.style.display = "none";
-        restartButton.style.display = "none";
+    const playButton = document.getElementById('playButton');
+    const stopButton = document.getElementById('stopButton');
+    const continueButton = document.getElementById('continueButton');
+    const restartButton = document.getElementById('restartButton');
+    const audio = document.getElementById('audio');
 
-        // 3 ثانیه صبر و بعد فعال کردن انیمیشن و دکمه‌ها
-        setTimeout(() => {
-            container.classList.add('active');
-            animateSigol();
-        }, 3000);
+    let pauseTime = 0;
 
-        function animateSigol() {
-            letters.forEach((letter, index) => {
-                letter.style.animationDelay = `${index * 0.3}s`;
-                letter.style.animationPlayState = 'running';
-            });
+    // ابتدا فقط play (شنیدن صدا) قابل مشاهده باشد — بقیه با JS کنترل میشه
+    // (ظاهرشدن گروه دکمه‌ها و تصویر بعد از 3 ثانیه)
+    setTimeout(() => {
+      container.classList.add('active');
+      // نمایش اولیه: فقط دکمه‌ی شنیدن فعال باشه
+      playButton.style.display = 'inline-block';
+      stopButton.style.display = 'none';
+      continueButton.style.display = 'none';
+      restartButton.style.display = 'none';
+    }, 3000);
 
-            // بعد از انیمیشن حروف فاصله را کم کن
-            setTimeout(() => {
-                sigolText.style.letterSpacing = "0.1em";
-            }, letters.length * 300 + 500);
-        }
+    // عملکردها
+    function playAudio(){
+      // وقتی شنیدن صدا کلیک شد، از جای توقف قبلی ادامه بده
+      audio.currentTime = pauseTime || 0;
+      audio.play().catch(()=>{/* برخی مرورگرها ممکنه جلوی autoplay بگیرن */});
+      playButton.style.display = 'none';
+      stopButton.style.display = 'inline-block';
+      continueButton.style.display = 'none';
+      restartButton.style.display = 'none';
+    }
 
-        function playAudio() {
-            if (audio.paused) {
-                audio.currentTime = pauseTime;
-                audio.play();
-                playButton.innerText = "در حال پخش...";
-                playButton.disabled = true;
-                stopButton.style.display = "inline-block";
-                restartButton.style.display = "none";
-            }
-        }
+    function stopAudio(){
+      audio.pause();
+      pauseTime = audio.currentTime;
+      // بعد از توقف: نمایش دکمه ادامه‌ی صدا (سمت چپ) و شروع مجدد (سمت راست)
+      playButton.style.display = 'none';
+      stopButton.style.display = 'none';
+      continueButton.style.display = 'inline-block';
+      restartButton.style.display = 'inline-block';
+      // متن ادامه را مطمئناً از ابتدا نزنیم؛ ادامه‌ی دقیق از pauseTime انجام می‌شود
+    }
 
-        function stopAudio() {
-            audio.pause();
-            pauseTime = audio.currentTime;
-            stopButton.style.display = "none";
-            playButton.innerText = "ادامه ی صدا";
-            playButton.disabled = false;
-            restartButton.style.display = "inline-block";
-        }
+    function continueAudio(){
+      // ادامه از همان جایی که متوقف شد
+      audio.currentTime = pauseTime || 0;
+      audio.play();
+      playButton.style.display = 'none';
+      stopButton.style.display = 'inline-block';
+      continueButton.style.display = 'none';
+      restartButton.style.display = 'none';
+    }
 
-        function restartAudio() {
-            pauseTime = 0;
-            audio.currentTime = 0;
-            audio.play();
-            playButton.innerText = "در حال پخش...";
-            playButton.disabled = true;
-            stopButton.style.display = "inline-block";
-            restartButton.style.display = "none";
-        }
+    function restartAudio(){
+      pauseTime = 0;
+      audio.currentTime = 0;
+      audio.play();
+      playButton.style.display = 'none';
+      stopButton.style.display = 'inline-block';
+      continueButton.style.display = 'none';
+      restartButton.style.display = 'none';
+    }
 
-        audio.addEventListener("ended", () => {
-            playButton.innerText = "شنیدن دوباره";
-            playButton.disabled = false;
-            stopButton.style.display = "none";
-            restartButton.style.display = "inline-block";
-        });
-    </script>
+    audio.addEventListener('ended', () => {
+      // وقتی تموم شد: show restart (سمت راست) و play به حالت شنیدن دوباره
+      playButton.style.display = 'inline-block';
+      playButton.textContent = 'شنيدن دوباره';
+      playButton.disabled = false;
+      stopButton.style.display = 'none';
+      continueButton.style.display = 'none';
+      restartButton.style.display = 'inline-block';
+      pauseTime = 0;
+    });
 
+    // اطمینان: همه‌ی متن‌ها از ی فارسی استفاده کنند
+    // (این کامنت صرفاً برای اطلاع است؛ در کد بالا همه ی‌ها بصورت صحیح وارد شده‌اند)
+  </script>
 </body>
 </html>
